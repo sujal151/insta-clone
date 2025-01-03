@@ -1,0 +1,32 @@
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 1px 5px 5px #e0dcdc;
+}
+
+@media (max-width: 900px) {
+   .navbar{
+    padding: 15px 0;
+   }
+  }
+
+img {
+    width: 8%;
+    object-fit: contain;
+}
+
+ul {
+    display: flex;
+}
+
+li {
+    list-style: none;
+    padding: 1px 15px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+}
