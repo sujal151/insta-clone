@@ -15,10 +15,11 @@ import Modal from "./components/Modal";
 
 const App = ({login}) => {
   const [userLogin, setUserLogin] = useState(false)
+  const [modalOpen, setModelOpen] = useState(false)
   return (
     <BrowserRouter>
       <div className='App'>
-        <LoginContext.Provider value={{ setUserLogin }}>
+        <LoginContext.Provider value={{ setUserLogin,setModelOpen }}>
           <Navbar login={userLogin} />
           <Routes>
             <Route path="/" element={<Home />} />

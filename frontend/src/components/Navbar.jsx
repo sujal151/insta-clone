@@ -1,9 +1,11 @@
+import React, { useContext} from "react";
 import logo from '../img/insta.png'
 import './Navbar.css'
 import { Link } from 'react-router-dom'
+import { LoginContext } from "../context/LoginContext";
 
 const Navbar = ({login}) => {
-
+const {setModalOpen}=useContext(LoginContext)
     const loginStatus = () => {
         const token = localStorage.getItem('jwt')
         if (login || token) {
@@ -12,7 +14,7 @@ const Navbar = ({login}) => {
                 <Link to={"/profile"}><li>Profile</li></Link>
                 <Link to={"/createpost"}><li>CreatePost</li></Link>
                 <Link to={"/"}>
-                <button className="primaryBtn">Log Out</button>
+                <button className="primaryBtn" onClick={()=>{setModalOpen(true)}}>Log Out</button>
                     </Link>
             </>
             ]
