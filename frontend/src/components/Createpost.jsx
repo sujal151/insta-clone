@@ -19,6 +19,7 @@ const Createpost = () => {
             .then(data => console.log(data))
             .catch(err => console.log(err))
         //   console.log(url)
+        
     }
 
     const loadfile = (event) => {
