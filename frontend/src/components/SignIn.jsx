@@ -37,6 +37,8 @@ const navigate =useNavigate()
           notifyA(data.error)
         } else {
           notifyB(data.message)
+          console.log(data)
+          localStorage.setItem("jwt", data)
           navigate("/")
         }
         console.log(data)

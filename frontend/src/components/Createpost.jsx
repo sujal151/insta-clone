@@ -1,9 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./Createpost.css"
+import { toast } from 'react-toastify'
+
 
 const Createpost = () => {
     const [body, setBody] = useState("");
     const [image, setImage] = useState("")
+    const [url, setUrl] = useState("")
+
+    const notifyA = (msg) => toast.error(msg)
+    const notifyB = (msg) => toast.success(msg)
+
+
+    useEffect(() => {
+        if (url) {
+            fetch("http://localhost:5339/createPost", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("jwt")
+                },
+                body: JSON.stringify({
+                    body,
+                    pic: url
+                })
+
+            })
+                .then(res => res.json())
+                .then(data => console.log(data))
+                .catch(err => console.log(err))
+        }
+    }, [url])
+
 
     // posting image to cloudinary
     const postDetails = () => {
@@ -15,11 +43,13 @@ const Createpost = () => {
         fetch("https://api.cloudinary.com/v1_1/swagecoder/image/upload", {
             method: "post",
             body: data
-          }).then(res => res.json())
-            .then(data => console.log(data))
+        }).then(res => res.json())
+            .then(data => setUrl(data.url))
             .catch(err => console.log(err))
-        //   console.log(url)
-        
+        console.log(url)
+
+
+
     }
 
     const loadfile = (event) => {
