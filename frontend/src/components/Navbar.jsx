@@ -11,6 +11,9 @@ const Navbar = ({login}) => {
             <>
                 <Link to={"/profile"}><li>Profile</li></Link>
                 <Link to={"/createpost"}><li>CreatePost</li></Link>
+                <Link to={"/"}>
+                <button className="primaryBtn">Log Out</button>
+                    </Link>
             </>
             ]
         }

@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Createpost from './components/Createpost'
 import { LoginContext } from './context/LoginContext'
+import Modal from "./components/Modal";
 
 
 const App = ({login}) => {
@@ -27,6 +28,7 @@ const App = ({login}) => {
             <Route path="/createpost" element={<Createpost />} />
           </Routes>
           <ToastContainer theme='dark' />
+          {/* <Modal/> */}
         </LoginContext.Provider>
 
       </div>
