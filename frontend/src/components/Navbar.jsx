@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { LoginContext } from "../context/LoginContext";
 
 const Navbar = ({login}) => {
-const {setModalOpen}=useContext(LoginContext)
+    const { setModalOpen } = useContext(LoginContext);
     const loginStatus = () => {
         const token = localStorage.getItem('jwt')
         if (login || token) {
@@ -13,9 +13,11 @@ const {setModalOpen}=useContext(LoginContext)
             <>
                 <Link to={"/profile"}><li>Profile</li></Link>
                 <Link to={"/createpost"}><li>CreatePost</li></Link>
-                <Link to={"/"}>
-                <button className="primaryBtn" onClick={()=>{setModalOpen(true)}}>Log Out</button>
-                    </Link>
+                <Link to={""}>
+            <button className="primaryBtn" onClick={() => setModalOpen(true)}>
+              Log Out
+            </button>
+          </Link>
             </>
             ]
         }

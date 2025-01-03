@@ -1,10 +1,12 @@
 import React from 'react'
 import { RiCloseLine } from 'react-icons/ri'
 import "./Modal.css"
+import { useNavigate } from 'react-router-dom'
 
-const Modal = () => {
+const Modal = ({ setModalOpen }) => {
+    const navigate=useNavigate()
     return (
-        <div className="darkBg">
+        <div className="darkBg" onClick={() => setModalOpen(false)}>
             <div className="centered">
                 <div className='modal'>
 
@@ -12,7 +14,7 @@ const Modal = () => {
                         <h5 className="heading">Confirm</h5>
                     </div>
 
-                    <button className="closeBtn">
+                    <button className="closeBtn" onClick={() => setModalOpen(false)}>
                         <RiCloseLine></RiCloseLine>
                     </button>
                     <div className="modalContent">
@@ -20,8 +22,13 @@ const Modal = () => {
                     </div>
                     <div className="modalActions">
                         <div className="actionsContainer">
-                            <button className="logOutBtn">logout</button>
-                            <button className="cancelBtn">cancel</button>
+                            <button className="logOutBtn"
+                                onClick={() => {
+                                    setModalOpen(false)
+                                    localStorage.clear()
+                                    navigate('/signin')
+                                }}>logout</button>
+                            <button className="cancelBtn" onClick={() => setModalOpen(false)}>cancel</button>
                         </div>
                     </div>
                 </div>

@@ -13,13 +13,13 @@ import { LoginContext } from './context/LoginContext'
 import Modal from "./components/Modal";
 
 
-const App = ({login}) => {
+const App = () => {
   const [userLogin, setUserLogin] = useState(false)
-  const [modalOpen, setModelOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
   return (
     <BrowserRouter>
       <div className='App'>
-        <LoginContext.Provider value={{ setUserLogin,setModelOpen }}>
+        <LoginContext.Provider value={{ setUserLogin,setModalOpen }}>
           <Navbar login={userLogin} />
           <Routes>
             <Route path="/" element={<Home />} />
@@ -29,7 +29,7 @@ const App = ({login}) => {
             <Route path="/createpost" element={<Createpost />} />
           </Routes>
           <ToastContainer theme='dark' />
-          {/* <Modal/> */}
+          {modalOpen && <Modal setModalOpen={setModalOpen}/>}
         </LoginContext.Provider>
 
       </div>
