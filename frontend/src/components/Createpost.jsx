@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import "./Createpost.css"
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
 
 
 const Createpost = () => {
     const [body, setBody] = useState("");
     const [image, setImage] = useState("")
     const [url, setUrl] = useState("")
+    const navigate = useNavigate()
 
     const notifyA = (msg) => toast.error(msg)
     const notifyB = (msg) => toast.success(msg)
@@ -15,7 +17,7 @@ const Createpost = () => {
     useEffect(() => {
         if (url) {
             fetch("http://localhost:5339/createPost", {
-                method: "POST",
+                method: "post",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + localStorage.getItem("jwt")
@@ -24,12 +26,18 @@ const Createpost = () => {
                     body,
                     pic: url
                 })
-
-            })
-                .then(res => res.json())
-                .then(data => console.log(data))
+            }).then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        notifyA(data.error)
+                    } else {
+                        notifyB("Successfully Posted")
+                        navigate("/")
+                    }
+                })
                 .catch(err => console.log(err))
         }
+
     }, [url])
 
 
@@ -47,16 +55,13 @@ const Createpost = () => {
             .then(data => setUrl(data.url))
             .catch(err => console.log(err))
         console.log(url)
-
-
-
     }
 
     const loadfile = (event) => {
         var output = document.getElementById("output");
         output.src = URL.createObjectURL(event.target.files[0]);
         output.onload = function () {
-            URL.revokeObjectURL(output.src); // free memory
+            URL.revokeObjectURL(output.src);
         };
     };
 
