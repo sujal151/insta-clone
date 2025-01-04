@@ -21,6 +21,36 @@ const Home = () => {
     }, [])
 
 
+    const likePost = (id) => {
+        fetch("http://localhost:5339/like", {
+            method: "put",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("jwt"),
+            },
+            body: JSON.stringify({
+              postId: id,
+            }),
+          })
+            .then(res => res.json())
+            .then(result => { console.log(result) })
+    }
+
+    const unlikePost = (id) => {
+        fetch("http://localhost:5339/unlike", {
+            method: "put",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("jwt"),
+            },
+            body: JSON.stringify({
+                postId: id
+            })
+        })
+            .then(res => res.json())
+            .then(result => { console.log(result) })
+    }
+
     return (
         <div className='home'>
             {
@@ -42,7 +72,10 @@ const Home = () => {
                             </div>
 
                             <div className="card-content">
-                                <span className="material-symbols-outlined">
+                                <span className="material-symbols-outlined " onClick={() => likePost(posts._id)}>
+                                    favorite
+                                </span>
+                                <span className="material-symbols-outlined material-symbols-outlined-red" onClick={() => unlikePost(posts._id)}>
                                     favorite
                                 </span>
                                 <p>1 like</p>

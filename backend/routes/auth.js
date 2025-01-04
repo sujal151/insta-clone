@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 const USER = mongoose.model("user")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const {Jwt_secret}=require("../keys")
+const { Jwt_secret } = require("../keys")
 const requireLogin = require("../middlewares/requireLogin")
 
 
@@ -13,8 +13,8 @@ router.get("/", (req, res) => {
     res.send("hello")
 })
 
-router.get("/createPost",requireLogin,(req,res)=>{
-   console.log("hello auth")
+router.get("/createPost", requireLogin, (req, res) => {
+    console.log("hello auth")
 })
 
 router.post("/signup", (req, res) => {
@@ -58,8 +58,9 @@ router.post("/signin", (req, res) => {
                     if (match) {
                         // return res.status(200).json({ message: "successfully signed in" })
                         const token = jwt.sign({ _id: savedUser.id }, Jwt_secret)
-                        res.json(token)
-                        console.log(token)
+                        const { _id, name, email, userName } = savedUser
+                        res.json({ token, user: { _id, name, email, userName } })
+                        console.log({ token, user: { _id, name, email, userName } })
                     } else {
                         return res.status(404).json({ error: "Invalid password" })
                     }

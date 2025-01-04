@@ -40,7 +40,9 @@ const navigate =useNavigate()
         } else {
           notifyB("Signed In Successfully")
           console.log(data)
-          localStorage.setItem("jwt", data)
+          localStorage.setItem("jwt", data.token)
+          localStorage.setItem("user", data.user)
+
           setUserLogin(true)
           navigate("/")
         }

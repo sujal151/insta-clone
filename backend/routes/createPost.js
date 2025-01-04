@@ -4,9 +4,9 @@ const mongoose = require("mongoose")
 const requireLogin = require("../middlewares/requireLogin")
 const POST = mongoose.model("POST")
 
-router.get("/allposts", requireLogin,(req, res) => {
+router.get("/allposts", requireLogin, (req, res) => {
     POST.find()
-    .populate("postedBy","_id name")
+        .populate("postedBy", "_id name")
         .then((posts) => { res.json(posts) })
         .catch((err) => { res.status(400).json({ err }) })
 })
@@ -41,5 +41,41 @@ router.get("/myposts", requireLogin, (req, res) => {
         })
 })
 
+
+router.put("/like", requireLogin, (req, res) => {
+    POST.findByIdAndUpdate(req.body.postId, {
+        $push: { likes: req.user._id }
+    }, {
+        new: true
+    })
+        // .populate("postedBy", "_id name Photo")
+        .then((result) => {
+            if (!result) {
+                return res.status(404).json({ error: "post not found" })
+            }
+            res.json(result)
+        })
+        .catch((err) => {
+            res.status(422).json({ error: err });
+        });
+})
+
+router.put("/unlike", requireLogin, (req, res) => {
+    POST.findByIdAndUpdate(req.body.postId, {
+        $pull: { likes: req.user._id }
+    }, {
+        new: true
+    })
+        // .populate("postedBy", "_id name Photo")
+        .then((result) => {
+            if (!result) {
+                return res.status(404).json({ error: "post not found" })
+            }
+            res.json(result)
+        })
+        .catch((err) => {
+            res.status(422).json({ error: err });
+        });
+})
 
 module.exports = router
