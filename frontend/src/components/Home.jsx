@@ -6,6 +6,8 @@ const Home = () => {
     const navigate = useNavigate()
     const [data, setData] = useState([])
     const [comment, setComment] = useState("")
+    const [show, setShow] = useState(false);
+    const [item, setItem] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem("jwt")
@@ -21,6 +23,17 @@ const Home = () => {
             .then(result => setData(result))
             .catch(err => console.log(err))
     }, [])
+
+
+    const toggleComment = (posts) => {
+        if (show) {
+            setShow(false);
+        } else {
+            setShow(true);
+            setItem(posts);
+            console.log(item)
+        }
+    };
 
 
     const likePost = (id) => {
@@ -73,7 +86,7 @@ const Home = () => {
             })
     }
 
-    const makeComment = (text,id) => {
+    const makeComment = (text, id) => {
         fetch("http://localhost:5339/comment", {
             method: "put",
             headers: {
@@ -81,13 +94,13 @@ const Home = () => {
                 Authorization: "Bearer " + localStorage.getItem("jwt"),
             },
             body: JSON.stringify({
-                text:text,
+                text: text,
                 postId: id,
             }),
         })
             .then(res => res.json())
             .then(result => {
-               console.log(result)
+                console.log(result)
             })
     }
 
@@ -127,6 +140,14 @@ const Home = () => {
 
                                 <p>{posts.likes.length} likes</p>
                                 <p>{posts.body}</p>
+                                <p
+                                    style={{ fontWeight: "bold", cursor: "pointer" }}
+                                    onClick={() => {
+                                        toggleComment(posts);
+                                    }}
+                                >
+                                    View all comments
+                                </p>
                             </div>
 
                             <div className="add-comment">
@@ -134,11 +155,83 @@ const Home = () => {
                                     mood
                                 </span>
                                 <input type="text" placeholder='Add a comment' value={comment} onChange={(e) => { setComment(e.target.value) }} />
-                                <button className='comment' onClick={() => { makeComment(comment,posts._id) }}>Post</button>
+                                <button className='comment' onClick={() => { makeComment(comment, posts._id) }}>Post</button>
                             </div>
                         </div>
                     )
                 })
+            }
+
+
+            {show && (
+                <div className="showComment">
+                    <div className="container">
+                        <div className="postPic">
+                            <img src={item.photo} alt="" />
+                        </div>
+                        <div className="details">
+                            <div
+                                className="card-header"
+                                style={{ borderBottom: "1px solid #00000029" }}
+                            >
+                                <div className="card-pic">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWZyY2h8MXx8GVyc29ufGVufDB8MnwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+                                        alt="Image Description"
+                                    />
+                                </div>
+                                <h4>{item.postedBy.name}</h4>
+                            </div>
+
+                            <div
+                                className="comment-section"
+                                style={{ borderBottom: "1px solid #00000029" }}
+                            >
+                                <p className='comm'>
+                                    <span
+                                        className="commenter"
+                                        style={{ fontWeight: "bolder" }}
+                                    > ramesh</span>
+                                    <span className='commentText'> nice pic</span>
+                                </p>
+                                <p className='comm'>
+                                    <span
+                                        className="commenter"
+                                        style={{ fontWeight: "bolder" }}
+                                    > ramesh</span>
+                                    <span className='commentText'> nice pic</span>
+                                </p>
+                                <p className='comm'>
+                                    <span
+                                        className="commenter"
+                                        style={{ fontWeight: "bolder" }}
+                                    > ramesh</span>
+                                    <span className='commentText'> nice pic</span>
+                                </p>
+                            </div>
+
+                            <div className="card-content">
+                                <p>{item.likes.length} like</p>
+                                <p>{item.body}</p>
+                            </div>
+
+                            <div className="add-comment">
+                                <span className="material-symbols-outlined">
+                                    mood
+                                </span>
+                                <input type="text" placeholder='Add a comment' value={comment} onChange={(e) => { setComment(e.target.value) }} />
+                                <button className='comment'
+                                //  onClick={() => { makeComment(comment, posts._id) }}
+                                >Post</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="close-comment" onClick={() => { toggleComment() }}>
+                        <span className="material-symbols-outlined material-symbols-outlined-comment">
+                            close
+                        </span>
+                    </div>
+                </div>)
             }
 
         </div>
