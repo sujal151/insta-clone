@@ -28,4 +28,18 @@ router.post("/createPost", requireLogin, (req, res) => {
     }).catch(err => console.log(err))
 })
 
+router.get("/myposts", requireLogin, (req, res) => {
+    // console.log(req.user)
+    POST.find({ postedBy: req.user._id })
+        .populate("postedBy", "_id name")
+
+        // .populate("comments.postedBy", "_id name")
+        // .sort("-createdAt")
+
+        .then(myposts => {
+            res.json(myposts)
+        })
+})
+
+
 module.exports = router
