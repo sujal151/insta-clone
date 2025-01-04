@@ -7,21 +7,21 @@ import { LoginContext } from '../context/LoginContext'
 
 
 const SignIn = () => {
-  const {setUserLogin} = useContext(LoginContext)
-const navigate =useNavigate()
+  const { setUserLogin } = useContext(LoginContext)
+  const navigate = useNavigate()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-    const notifyA = (msg) => toast.error(msg)
-    const notifyB = (msg) => toast.success(msg)
+  const notifyA = (msg) => toast.error(msg)
+  const notifyB = (msg) => toast.success(msg)
 
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
   const postData = () => {
     if (!emailRegex.test(email)) {
       notifyA("Invalid Email")
       return
-    } 
+    }
 
     fetch("http://localhost:5339/signin", {
       method: "post",
@@ -41,7 +41,7 @@ const navigate =useNavigate()
           notifyB("Signed In Successfully")
           console.log(data)
           localStorage.setItem("jwt", data.token)
-          localStorage.setItem("user", data.user)
+          localStorage.setItem("user", JSON.stringify(data.user))
 
           setUserLogin(true)
           navigate("/")
@@ -58,7 +58,7 @@ const navigate =useNavigate()
         <div className="loginForm">
           <img className='signUpLogo' src={logo} alt="" />
           <div>
-          <input
+            <input
               type="email"
               name='email'
               id='email'
@@ -67,7 +67,7 @@ const navigate =useNavigate()
             />
           </div>
           <div>
-          <input
+            <input
               type="password"
               name='password'
               id='password'
@@ -75,7 +75,7 @@ const navigate =useNavigate()
               placeholder="Password"
             />
           </div>
-          <input type="submit" id='login-btn' value="Sign In" onClick={()=>{postData()}} />
+          <input type="submit" id='login-btn' value="Sign In" onClick={() => { postData() }} />
         </div>
         <div className='loginForm2'>
           Don't have an account?

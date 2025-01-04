@@ -10,9 +10,13 @@ const postSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    likes:[{
+    likes: [{
         type: ObjectId,
-        ref:"user"
+        ref: "user"
+    }],
+    comments: [{
+        comment: { type: String },
+        postedBy: { type: ObjectId, ref: "user" }
     }],
     postedBy: {
         type: ObjectId,
@@ -21,4 +25,4 @@ const postSchema = new mongoose.Schema({
 
 })
 
-mongoose.model("POST",postSchema)
+mongoose.model("POST", postSchema)

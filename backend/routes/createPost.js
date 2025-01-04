@@ -56,7 +56,7 @@ router.put("/like", requireLogin, (req, res) => {
             res.json(result)
         })
         .catch((err) => {
-            res.status(422).json({ error: err });
+            res.status(422).json({ error: err.message });
         });
 })
 
@@ -74,8 +74,30 @@ router.put("/unlike", requireLogin, (req, res) => {
             res.json(result)
         })
         .catch((err) => {
-            res.status(422).json({ error: err });
+            res.status(422).json({ error: err.message });
         });
+})
+
+router.put("/comment", requireLogin, (req, res) => {
+    const comment = {
+        comment: req.body.text,
+        postedBy: req.user._id
+    }
+    POST.findByIdAndUpdate(req.body.postId, {
+        $push: { comments: comment }
+    }, {
+        new: true
+    })
+    .populate("comments.postedBy", "_id name")
+    .then((result) => {
+        if (!result) {
+            return res.status(404).json({ error: "post not found" })
+        }
+        res.json(result)
+    })
+    .catch((err) => {
+        res.status(422).json({ error: err.message });
+    });
 })
 
 module.exports = router
