@@ -24,7 +24,7 @@ const Home = () => {
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
             }
         }).then(res => res.json())
-            .then(result => setData(result))
+            .then(result => {setData(result), console.log(result)})
             .catch(err => console.log(err))
     }, [])
 

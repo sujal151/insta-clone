@@ -41,7 +41,6 @@ router.get("/myposts", requireLogin, (req, res) => {
         })
 })
 
-
 router.put("/like", requireLogin, (req, res) => {
     POST.findByIdAndUpdate(req.body.postId, {
         $push: { likes: req.user._id }
@@ -99,6 +98,31 @@ router.put("/comment", requireLogin, (req, res) => {
         .catch((err) => {
             res.status(422).json({ error: err.message });
         });
+})
+
+router.delete("/deletePost/:postId", requireLogin, (req, res) => {
+   
+    POST.findOne({ _id: req.params.postId })
+    // .populate("postedBy", "_id ")
+    .then((post) => {
+        if (!post ||err) {
+            return res.status(422).json({ error:err })
+        }
+        console.log(post.postedBy._id, req.user._id)
+        // if (post.postedBy._id.toString() === req.user._id.toString()) {
+        //     post.remove()
+        //         .then((result) => {
+        //             res.json(result)
+        //         })
+        //         .catch((err) => {
+        //             res.status(422).json({ error: err.message });
+        //         });
+        // }
+        console.log(post)
+    })
+    .catch((err) => {
+        // res.status(422).json({ error: err.message });
+    });
 })
 
 module.exports = router
