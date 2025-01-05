@@ -5,9 +5,9 @@
     top: 0;
     left: 0;
     background-color: rgba(16, 13, 13, 0.4);
-  }
-  
-  .container {
+}
+
+.container {
     display: flex;
     width: 80%;
     background-color: white;
@@ -15,43 +15,52 @@
     top: 10%;
     left: 10%;
     height: 500px;
-  }
-  
-  .postPic {
+}
+
+.postPic {
     background-color: black;
     display: flex;
     align-items: center;
-  }
-  
-  .postPic img {
+}
+
+.postPic img {
     object-fit: contain;
     width: 100%;
-  }
-  
-  .details {
+}
+
+.details {
     width: 100%;
     height: inherit;
     display: flex;
     flex-direction: column;
-  }
-  
-  .comment-section {
+}
+
+.comment-section {
     flex-grow: 4;
     text-align: left;
     margin-left: 10px;
-  }
-  
-  .close-comment {
+}
+
+.close-comment {
     position: fixed;
     top: 1%;
     right: 5%;
     color: white;
     border: none;
     cursor: pointer;
-  }
-  
-  .deletePost {
+}
+
+.deletePost {
     position: absolute;
-    top: 10px;
+    top: 20px;
     right: 10px;
-  }
+}
+
+/* .card-pic img{
+    margin-top: 5px;
+}
+
+.card-header{
+    display: flex;
+    align-items: center;
+} */

@@ -99,29 +99,22 @@ router.put("/comment", requireLogin, (req, res) => {
             res.status(422).json({ error: err.message });
         });
 })
-
 router.delete("/deletePost/:postId", requireLogin, (req, res) => {
     POST.findOne({ _id: req.params.postId })
         .populate("postedBy", "_id")
-        .then((post,err) => {
-            if (!post ||err) {
-                return res.status(422).json({ error: err })
-
+        .then((post) => {
+            if (!post) {
+                return res.status(404).json({ error: "Post not found" });
             }
-            console.log(post.postedBy._id.toString, req.user._id)
-            if (post.postedBy._id.toString() == req.user._id.toString()) {
-                post.remove()
-                .then(result => {
-                    return res.json({ message: "Successfully deleted" })
-                }).catch((err) => {
-                    console.log(err)
-                })
+            if (post.postedBy._id.toString() === req.user._id.toString()) {
+                POST.deleteOne({ _id: req.params.postId })
+                    .then(() => res.json({ message: "Post deleted successfully" }))
+                    .catch((err) => res.status(422).json({ error: err.message }));
+            } else {
+                res.status(403).json({ error: "Unauthorized action" });
             }
-            console.log(post)
         })
-        .catch((err) => {
-            // res.status(422).json({ error: err.message });
-        });
-})
+        .catch((err) => res.status(422).json({ error: err.message }));
+});
 
 module.exports = router

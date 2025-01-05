@@ -12,26 +12,26 @@ const Profile = () => {
 
   const toggleDetails = (posts) => {
     if (show) {
-      setShow(false);
+        setShow(false);
     } else {
-      setShow(true);
-      setPosts(posts);
+        setShow(true);
+        setPosts(posts);
     }
-  };
+};
 
-  useEffect(() => {
-    fetch("http://localhost:5339/myposts", {
+useEffect(() => {
+  fetch("http://localhost:5339/myposts", {
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt")
-      }
-    })
-      .then(res => res.json())
-      .then(result => {
-        setPic(result)
-        console.log(pic)
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+  })
+      .then((res) => res.json())
+      .then((result) => {
+          setPic(result); 
       })
+      .catch((err) => console.log(err));
+}, []);
 
-  }, [])
 
 
   return (
