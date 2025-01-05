@@ -1,28 +1,29 @@
 import React, { useEffect } from 'react'
 import "./Profile.css"
 import { useState } from 'react'
-import PostDetail from './PostDetail'
+import { useParams } from 'react-router-dom'
 
 const UserProfile = () => {
-    const [pic, setPic] = useState([]);
-    const [show, setShow] = useState(false)
+    const { userid } = useParams();
+    //   const [isFollow, setIsFollow] = useState(false);
+    const [user, setUser] = useState("");
     const [posts, setPosts] = useState([]);
-    
 
-    
+    useEffect(() => {
+        console.log(localStorage.getItem("jwt"));
+        fetch(`http://localhost:5339/user/${userid}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("jwt"),
+            },
+          })
+          .then((res) => res.json())
+          .then((result) => {
+            console.log(result);
+            setPosts(result.posts );
+            setUser(result.user );
+            })
 
-    // useEffect(() => {
-    //     fetch("http://localhost:5339/myposts", {
-    //         headers: {
-    //             Authorization: "Bearer " + localStorage.getItem("jwt"),
-    //         },
-    //     })
-    //         .then((res) => res.json())
-    //         .then((result) => {
-    //             setPic(result);
-    //         })
-    //         .catch((err) => console.log(err));
-    // }, []);
+    }, []);
 
 
 
@@ -37,9 +38,9 @@ const UserProfile = () => {
                 </div>
 
                 <div className="profile-data">
-                    <h1>{JSON.parse(localStorage.getItem("user")).name}</h1>
+                    <h1>{user.name}</h1>
                     <div className="profile-info ">
-                        <p>40 postss</p>
+                        <p>{posts.length} posts</p>
                         <p>40 followers</p>
                         <p>40 following</p>
                     </div>
@@ -55,13 +56,18 @@ const UserProfile = () => {
             }} />
 
             <div className="gallery">
-                {pic.map((pics) => {
-                    return <img key={pics._id} src={pics.photo}
-                        // onClick={() => {
-                        //     toggleDetails(pics)
-                        // }}
-                        className="item"></img>;
-                })}
+            {posts.map((pics) => {
+          return (
+            <img
+              key={pics._id}
+              src={pics.photo}
+              // onClick={() => {
+              //     toggleDetails(pics)
+              // }}
+              className="item"
+            ></img>
+          );
+        })}
             </div>
             {/* {show &&
                 <PostDetail item={posts} toggleDetails={toggleDetails} />

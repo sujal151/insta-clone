@@ -28,7 +28,7 @@ const App = () => {
             <Route path="/signin" element={<SignIn />} />
             <Route exact path="/profile" element={<Profile />} />
             <Route path="/createpost" element={<Createpost />} />
-            <Route path="/profile/:id" element={<UserProfile />} />
+            <Route path="/profile/:userid" element={<UserProfile />} />
           </Routes>
           <ToastContainer theme='dark' />
           {modalOpen && <Modal setModalOpen={setModalOpen}/>}
