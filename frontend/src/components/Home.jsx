@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "./Home.css"
 import { useNavigate } from 'react-router-dom'
+import { toast } from "react-toastify";
 
 const Home = () => {
     const navigate = useNavigate()
@@ -8,6 +9,9 @@ const Home = () => {
     const [comment, setComment] = useState("")
     const [show, setShow] = useState(false);
     const [item, setItem] = useState([]);
+
+    const notifyA = (msg) => toast.error(msg);
+    const notifyB = (msg) => toast.success(msg);
 
     useEffect(() => {
         const token = localStorage.getItem("jwt")
@@ -100,6 +104,16 @@ const Home = () => {
         })
             .then(res => res.json())
             .then(result => {
+                const newData = data.map((posts) => {
+                    if (posts._id === result._id) {
+                        return result
+                    } else {
+                        return posts
+                    }
+                })
+                setData(newData)
+                setComment("")
+                notifyB("Comment Posted")
                 console.log(result)
             })
     }
@@ -187,27 +201,17 @@ const Home = () => {
                                 className="comment-section"
                                 style={{ borderBottom: "1px solid #00000029" }}
                             >
-                                <p className='comm'>
-                                    <span
-                                        className="commenter"
-                                        style={{ fontWeight: "bolder" }}
-                                    > ramesh</span>
-                                    <span className='commentText'> nice pic</span>
-                                </p>
-                                <p className='comm'>
-                                    <span
-                                        className="commenter"
-                                        style={{ fontWeight: "bolder" }}
-                                    > ramesh</span>
-                                    <span className='commentText'> nice pic</span>
-                                </p>
-                                <p className='comm'>
-                                    <span
-                                        className="commenter"
-                                        style={{ fontWeight: "bolder" }}
-                                    > ramesh</span>
-                                    <span className='commentText'> nice pic</span>
-                                </p>
+                                {item.comments.map((comment) => {
+                                    return <p className='comm'>
+                                        <span
+                                            className="commenter"
+                                            style={{ fontWeight: "bolder" }}
+                                        > {comment.postedBy.name} </span>
+                                        <span className='commentText'> {comment.comment}</span>
+                                    </p>
+                                })}
+
+                           
                             </div>
 
                             <div className="card-content">
@@ -221,7 +225,10 @@ const Home = () => {
                                 </span>
                                 <input type="text" placeholder='Add a comment' value={comment} onChange={(e) => { setComment(e.target.value) }} />
                                 <button className='comment'
-                                //  onClick={() => { makeComment(comment, posts._id) }}
+                                 onClick={() => { makeComment(comment, item._id) 
+                                    toggleComment()
+                                 }}
+
                                 >Post</button>
                             </div>
                         </div>
