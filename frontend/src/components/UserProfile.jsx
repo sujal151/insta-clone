@@ -5,9 +5,46 @@ import { useParams } from 'react-router-dom'
 
 const UserProfile = () => {
   const { userid } = useParams();
-  //   const [isFollow, setIsFollow] = useState(false);
+  const [isFollow, setIsFollow] = useState(false);
   const [user, setUser] = useState("");
   const [posts, setPosts] = useState([]);
+
+  const followUser = (userId) => {
+    fetch("http://localhost:5339/follow", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        followId: userId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setIsFollow(true);
+      });
+  };
+
+  const unfollowUser = (userId) => {
+    fetch("http://localhost:5339/unfollow", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt")
+      },
+      body: JSON.stringify({
+        followId: userId
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setIsFollow(!isFollow)
+      })
+  }
+
 
   useEffect(() => {
     console.log(localStorage.getItem("jwt"));
@@ -21,9 +58,11 @@ const UserProfile = () => {
         console.log(result);
         setPosts(result.posts);
         setUser(result.user);
+        if (result.user.followers.includes(JSON.parse(localStorage.getItem("user"))._id)) {
+          setIsFollow(true);
+        }
       })
-
-  }, []);
+  }, [isFollow]);
 
 
 
@@ -38,7 +77,25 @@ const UserProfile = () => {
         </div>
 
         <div className="profile-data">
-          <h1>{user.name}</h1>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
+            <h1>{user.name}</h1>
+            <button className='followBtn'
+              onClick={() => {
+                if (isFollow) {
+                  unfollowUser(user._id)
+                }else{
+                  followUser(user._id)
+                }
+              }}
+            >
+              {isFollow ? "Unfollow" : "Follow"}
+            </button>
+          </div>
           <div className="profile-info ">
             <p>{posts.length} posts</p>
             <p>40 followers</p>
