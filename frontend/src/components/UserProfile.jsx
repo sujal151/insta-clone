@@ -88,7 +88,7 @@ const UserProfile = () => {
               onClick={() => {
                 if (isFollow) {
                   unfollowUser(user._id)
-                }else{
+                } else {
                   followUser(user._id)
                 }
               }}
@@ -98,8 +98,8 @@ const UserProfile = () => {
           </div>
           <div className="profile-info ">
             <p>{posts.length} posts</p>
-            <p>40 followers</p>
-            <p>40 following</p>
+            <p > {user.followers?user.followers.length:"0"} followers</p>
+            <p > {user.following?user.following.length:"0" } following</p>
           </div>
         </div>
       </div>

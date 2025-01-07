@@ -99,6 +99,7 @@ router.put("/comment", requireLogin, (req, res) => {
             res.status(422).json({ error: err.message });
         });
 })
+
 router.delete("/deletePost/:postId", requireLogin, (req, res) => {
     POST.findOne({ _id: req.params.postId })
         .populate("postedBy", "_id")
@@ -116,5 +117,17 @@ router.delete("/deletePost/:postId", requireLogin, (req, res) => {
         })
         .catch((err) => res.status(422).json({ error: err.message }));
 });
+
+router.get("/myfollwingpost", requireLogin, (req, res) => {
+    POST.find({ postedBy: { $in: req.user.following } })
+    .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
+    .then(posts => {
+        res.json(posts)
+    })
+    .catch(err => {
+       console.log(err)
+    })
+})
 
 module.exports = router
