@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import "./Profile.css"
+import "../css/Profile.css"
 import { useState } from 'react'
 import PostDetail from './PostDetail'
-import ProfilePic from './ProfilePic'
+import ProfilePic from '../screens/ProfilePic'
 
 const Profile = () => {
    var picLink = "https://cdn-icons-png.flaticon.com/128/3177/3177440.png"
