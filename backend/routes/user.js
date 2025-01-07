@@ -22,6 +22,7 @@ router.get("/user/:id", (req, res) => {
             return res.status(404).json({ error: "User not found" });
         });
 })
+
 router.put("/follow", requireLogin, async (req, res) => {
     try {
         const result = await USER.findByIdAndUpdate(
@@ -43,7 +44,6 @@ router.put("/follow", requireLogin, async (req, res) => {
         res.status(422).json({ error: err.message });
     }
 });
-
 
 router.put("/unfollow", requireLogin, async (req, res) => {
     try {
@@ -67,6 +67,20 @@ router.put("/unfollow", requireLogin, async (req, res) => {
     } catch (err) {
         res.status(422).json({ error: err.message });
     }
+});
+
+router.put("/uploadProfilePic", requireLogin, (req, res) => {
+    USER.findByIdAndUpdate(
+        req.user._id,
+        { $set: { Photo: req.body.pic } }, 
+        { new: true }
+    )
+        .then(result => {
+            res.json(result);
+        })
+        .catch(err => {
+            return res.status(422).json({ error: "Pic can't be uploaded: " + err.message });
+        });
 });
 
 

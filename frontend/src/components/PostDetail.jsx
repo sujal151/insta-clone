@@ -21,7 +21,8 @@ const PostDetail = ({ item, toggleDetails }) => {
             .then((result) => {
                 console.log(result);
                 toggleDetails();
-                navigate("/");
+                navigate("/profile");
+                window.location.reload();
                 notifyB(result.message);
             });
         }

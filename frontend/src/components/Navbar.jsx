@@ -1,10 +1,11 @@
 import React, { useContext} from "react";
 import logo from '../img/insta.png'
 import './Navbar.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { LoginContext } from "../context/LoginContext";
 
 const Navbar = ({login}) => {
+    const navigate=useNavigate()
     const { setModalOpen } = useContext(LoginContext);
     const loginStatus = () => {
         const token = localStorage.getItem('jwt')
@@ -36,9 +37,12 @@ const Navbar = ({login}) => {
     return (
         <>
             <div className='navbar'>
-                {/* <Link to={"/"}> */}
-                <img src={logo} alt="" />
-                {/* </Link> */}
+                <img src={logo} alt="" 
+
+                onClick={() => {
+                    navigate('/')
+                }}
+                />
                 <ul>
                    {loginStatus()}
                 </ul>

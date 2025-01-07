@@ -6,8 +6,9 @@ const POST = mongoose.model("POST")
 
 router.get("/allposts", requireLogin, (req, res) => {
     POST.find()
-        .populate("postedBy", "_id name")
-        .populate("comments.postedBy", "_id name")
+        .populate("postedBy", "_id name Photo")
+        .populate("comments.postedBy", "_id name ")
+        .sort("-createdAt")
         .then((posts) => { res.json(posts) })
         .catch((err) => { res.status(400).json({ err }) })
 })
@@ -18,6 +19,7 @@ router.post("/createPost", requireLogin, (req, res) => {
     if (!body || !pic) {
         return res.status(422).json({ error: "Please add all the fields" })
     }
+    
     console.log(req.user)
     const post = new POST({
         body,
@@ -27,6 +29,7 @@ router.post("/createPost", requireLogin, (req, res) => {
     post.save().then((result) => {
         return res.json({ post: result })
     }).catch(err => console.log(err))
+    // .sort("-createdAt")
 })
 
 router.get("/myposts", requireLogin, (req, res) => {
@@ -34,8 +37,7 @@ router.get("/myposts", requireLogin, (req, res) => {
     POST.find({ postedBy: req.user._id })
         .populate("postedBy", "_id name")
         .populate("comments.postedBy", "_id name")
-        // .sort("-createdAt")
-
+        .sort("-createdAt")
         .then(myposts => {
             res.json(myposts)
         })
@@ -102,14 +104,15 @@ router.put("/comment", requireLogin, (req, res) => {
 
 router.delete("/deletePost/:postId", requireLogin, (req, res) => {
     POST.findOne({ _id: req.params.postId })
-        .populate("postedBy", "_id")
+        .populate("postedBy", "_id ")
         .then((post) => {
             if (!post) {
                 return res.status(404).json({ error: "Post not found" });
             }
             if (post.postedBy._id.toString() === req.user._id.toString()) {
                 POST.deleteOne({ _id: req.params.postId })
-                    .then(() => res.json({ message: "Post deleted successfully" }))
+                    .then(() => {res.json({ message: "Post deleted successfully" })})
+     
                     .catch((err) => res.status(422).json({ error: err.message }));
             } else {
                 res.status(403).json({ error: "Unauthorized action" });
