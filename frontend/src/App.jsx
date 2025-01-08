@@ -19,7 +19,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <div className='App'>
-        <LoginContext.Provider value={{ setUserLogin,setModalOpen }}>
+        <LoginContext.Provider value={{ setUserLogin, setModalOpen }}>
           <Navbar login={userLogin} />
           <Routes>
             <Route path="/" element={<Home />} />
@@ -28,10 +28,10 @@ const App = () => {
             <Route exact path="/profile" element={<Profile />} />
             <Route path="/createpost" element={<Createpost />} />
             <Route path="/profile/:userid" element={<UserProfile />} />
-            <Route path="/myfollwingpost" element={<MyFolliwngPost />} />
+            <Route path="/myfollowingpost" element={<MyFolliwngPost />} />
           </Routes>
           <ToastContainer theme='dark' />
-          {modalOpen && <Modal setModalOpen={setModalOpen}/>}
+          {modalOpen && <Modal setModalOpen={setModalOpen} />}
         </LoginContext.Provider>
 
       </div>

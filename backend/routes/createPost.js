@@ -19,7 +19,7 @@ router.post("/createPost", requireLogin, (req, res) => {
     if (!body || !pic) {
         return res.status(422).json({ error: "Please add all the fields" })
     }
-    
+
     console.log(req.user)
     const post = new POST({
         body,
@@ -111,8 +111,8 @@ router.delete("/deletePost/:postId", requireLogin, (req, res) => {
             }
             if (post.postedBy._id.toString() === req.user._id.toString()) {
                 POST.deleteOne({ _id: req.params.postId })
-                    .then(() => {res.json({ message: "Post deleted successfully" })})
-     
+                    .then(() => { res.json({ message: "Post deleted successfully" }) })
+
                     .catch((err) => res.status(422).json({ error: err.message }));
             } else {
                 res.status(403).json({ error: "Unauthorized action" });
@@ -121,16 +121,16 @@ router.delete("/deletePost/:postId", requireLogin, (req, res) => {
         .catch((err) => res.status(422).json({ error: err.message }));
 });
 
-router.get("/myfollwingpost", requireLogin, (req, res) => {
+router.get("/myfollowingpost", requireLogin, (req, res) => {
     POST.find({ postedBy: { $in: req.user.following } })
-    .populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
-    .then(posts => {
-        res.json(posts)
-    })
-    .catch(err => {
-       console.log(err)
-    })
+        .populate("postedBy", "_id name")
+        .populate("comments.postedBy", "_id name")
+        .then(posts => {
+            res.json(posts)
+        })
+        .catch(err => {
+            console.log(err)
+        })
 })
 
 module.exports = router

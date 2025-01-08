@@ -20,7 +20,7 @@ export default function MyFolliwngPost() {
       navigate("./signup");
     }
 
-    fetch("http://localhost:5339/myfollwingpost", {
+    fetch("http://localhost:5339/myfollowingpost", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },

@@ -86,7 +86,7 @@ const Createpost = () => {
                     <div className="card-pic">
                         <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWZyY2h8MXx8GVyc29ufGVufDB8MnwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt="" />
                     </div>
-                    <h4>ramlo</h4>
+                    <h4>ramesh</h4>
                 </div>
                 <textarea value={body} onChange={(e) => {
                     setBody(e.target.value)
