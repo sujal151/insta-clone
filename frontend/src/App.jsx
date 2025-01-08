@@ -11,7 +11,7 @@ import Createpost from "./screens/Createpost"
 import UserProfile from "./components/UserProfile"
 import MyFolliwngPost from "./screens/myFollowinfPost"
 import Modal from "./components/Modal"
-
+import "./App.css"
 
 const App = () => {
   const [userLogin, setUserLogin] = useState(false)
